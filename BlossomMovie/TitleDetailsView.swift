@@ -14,14 +14,8 @@ struct TitleDetailsView: View {
         GeometryReader { geomatry in
             ScrollView {
                 LazyVStack(alignment: .leading) {
-                    AsyncImage(url: URL(string: title.posterPath ?? "")) { image in
-                        image
-                            .resizable()
-                            .scaledToFit()
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    .frame(width: geomatry.size.width, height: geomatry.size.height * 0.85)
+                    YoutubePlayer(videoId: "pbiQKOmsIKg")
+                        .aspectRatio(1.3, contentMode: .fit)
                     
                     Text(title.name ?? title.title ?? "")
                         .font(.title)
