@@ -15,7 +15,7 @@ struct Constants {
     static let downloadString = "Download"
     static let playString = "Play"
     static let trendingMoviesString = "Trending Movies"
-    static let trendingTvString = "Treing TV"
+    static let trendingTvString = "Treding TV"
     static let topRatedMoviesString = "Top Rated Movies"
     static let topRatedTvString = "Top Rated TV"
     

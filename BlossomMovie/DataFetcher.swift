@@ -13,20 +13,10 @@ struct DataFetcher {
     
     //https://api.themoviedb.org/3/trending/movie/day?api_key=YOUR_API_KEY
     //https://api.themoviedb.org/3/movie/top_rated?api_key=YOUR_API_KEY
-    func fetchTitles(for media: String) async throws -> [Title] {
-        guard let baseUrl = tmdbBaseUrl else {
-            throw NetworkErrors.missingConfig
-        }
+    func fetchTitles(for media: String, by type: String) async throws -> [Title] {
+        let fetchTitleURL = try buildURL(media: media, type: type)
         
-        guard let apiKey = tmdbAPIKey else {
-            throw NetworkErrors.missingConfig
-        }
-        
-        guard let fetchTitleURL = URL(string: baseUrl)?
-            .appending(path: "3/trending/\(media)/day")
-            .appending(queryItems: [
-                URLQueryItem(name: "api_key", value: apiKey)
-            ]) else {
+        guard let fetchTitleURL = fetchTitleURL else {
             throw NetworkErrors.urlBuildFailed
         }
         
@@ -47,6 +37,35 @@ struct DataFetcher {
         var titles = try decoder.decode(APIObject.self, from: data).results
         Constants.addPosterPath(to: &titles)
         return titles
+    }
+    
+    private func buildURL(media: String, type: String) throws -> URL? {
+        guard let baseUrl = tmdbBaseUrl else {
+            throw NetworkErrors.missingConfig
+        }
+        
+        guard let apiKey = tmdbAPIKey else {
+            throw NetworkErrors.missingConfig
+        }
+        
+        var path: String
+        if type == "trending" {
+            path = "3/trending/\(media)/day"
+        }else if type == "top_rated" {
+            path = "3/\(media)/top_rated"
+        }else {
+            throw NetworkErrors.urlBuildFailed
+        }
+        
+        guard let url = URL(string: baseUrl)?
+            .appending(path: path)
+            .appending(queryItems: [
+                URLQueryItem(name: "api_key", value: apiKey)
+            ]) else {
+            throw NetworkErrors.urlBuildFailed
+        }
+        
+        return url
     }
 }
 
