@@ -12,6 +12,7 @@ struct APIConfig: Decodable {
     let tmdbAPIKey: String
     let youtubeBaseUrl: String
     let youtubeSearchUrl: String
+    let youtubeAPIKey: String
     
     static let shared: APIConfig? = {
         do {
