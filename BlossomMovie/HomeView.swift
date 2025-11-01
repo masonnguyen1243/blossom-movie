@@ -24,7 +24,7 @@ struct HomeView: View {
                                         Gradient.Stop(color: .clear, location: 0.8),
                                         Gradient.Stop(color: .gradient, location: 1)],
                                     startPoint: .top,
-                                    endPoint: .bottom)
+                                    endPoint: .bottom) 
                             }
                     } placeholder: {
                         ProgressView()
