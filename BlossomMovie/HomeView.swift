@@ -57,13 +57,18 @@ struct HomeView: View {
                                 }
                             }
                             
-                            HorizontalListView(header: Constants.trendingMoviesString, titles: viewModel.trendingMovies)
-                            HorizontalListView(header: Constants.trendingTvString, titles: viewModel.trendingTV)
-                            HorizontalListView(header: Constants.topRatedMoviesString, titles: viewModel.topRatedMovies)
-                            HorizontalListView(header: Constants.topRatedTvString, titles: viewModel.topRatedTV)
-                        }
-                        .navigationDestination(for: Title.self) { title in
-                                TitleDetailsView(title: title)
+                            HorizontalListView(header: Constants.trendingMoviesString, titles: viewModel.trendingMovies) { title in
+                                titleDetailPath.append(title)
+                            }
+                            HorizontalListView(header: Constants.trendingTvString, titles: viewModel.trendingTV){ title in
+                                titleDetailPath.append(title)
+                            }
+                            HorizontalListView(header: Constants.topRatedMoviesString, titles: viewModel.topRatedMovies){ title in
+                                titleDetailPath.append(title)
+                            }
+                            HorizontalListView(header: Constants.topRatedTvString, titles: viewModel.topRatedTV){ title in
+                                titleDetailPath.append(title)
+                            }
                         }
                     case .failure(underlyingError: let error):
                         Text("Error: \(error.localizedDescription)")
@@ -72,6 +77,9 @@ struct HomeView: View {
                 }
                 .task {
                     await viewModel.getTitle()
+                }
+                .navigationDestination(for: Title.self) { title in
+                        TitleDetailsView(title: title)
                 }
             }
         }
