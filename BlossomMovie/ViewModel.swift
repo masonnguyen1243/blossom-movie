@@ -18,11 +18,14 @@ class ViewModel {
     
     private(set) var homeStatus: FetchStatus = .notStarted
     private(set) var videoIdStatus: FetchStatus = .notStarted
+    private(set) var upcomingStatus: FetchStatus = .notStarted
+    
     private let dataFetcher = DataFetcher()
     var trendingMovies: [Title] = []
     var trendingTV: [Title] = []
     var topRatedMovies: [Title] = []
     var topRatedTV: [Title] = []
+    var upcomingMovies: [Title] = []
     var heroTitle = Title.previewTitles[0]
     var videoId = ""
     
@@ -66,6 +69,18 @@ class ViewModel {
             print(error)
             print("❌ Error:", error)
             videoIdStatus = .failure(underlyingError: error)
+        }
+    }
+    
+    func getUpComingMovies() async {
+        upcomingStatus = .fetching
+        
+        do {
+            upcomingMovies = try await dataFetcher.fetchTitles(for: "movie", by: "upcoming")
+            upcomingStatus = .success
+        }catch {
+            print(error)
+            upcomingStatus = .failure(underlyingError: error)
         }
     }
         
